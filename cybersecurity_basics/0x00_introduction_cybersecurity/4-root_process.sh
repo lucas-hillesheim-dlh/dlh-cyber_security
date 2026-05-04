@@ -1,2 +1,2 @@
 #!/bin/bash
-ps --no-headers -u "$1" u | grep -v "  *0  *0 "
+ps ps huU $1 | grep -v "  *0  *0 "
