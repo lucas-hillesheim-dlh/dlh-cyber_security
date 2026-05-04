@@ -1,2 +1,2 @@
 #\!/bin/bash
-ps h -u $1 u | grep -v "0     0"
+ps --no-headers -u $1 u | grep -v "0     0"
