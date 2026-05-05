@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Looping through the echo command and waiting for 2 seconds indefinitely 
+while true; do echo "I am alive!" >> /tmp/my_process; sleep 2; done
+
