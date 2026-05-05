@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-# Run the ps command filtering processes with name ps and showing only the PID without the headers
+# Run the ps command filtering processes with name bash and showing only the PID without the headers
 ps -C bash -o pid --no-headers
