@@ -1,0 +1,2 @@
+#!/bin/bash
+ps -C ps -o pid --no-headers
