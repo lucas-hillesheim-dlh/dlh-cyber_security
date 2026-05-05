@@ -1,2 +1,2 @@
 #!/bin/bash
-ps huU "$1" | grep -v "  *0  *0 "
+ps huU "$1" | grep -vE "\s+0\s+0\s"
