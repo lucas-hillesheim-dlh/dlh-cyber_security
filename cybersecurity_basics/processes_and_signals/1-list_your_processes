@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 # Run the ps command showing all processes, in a user-oriented format and the process hierarchy
-ps aux -H
+ps auxf
