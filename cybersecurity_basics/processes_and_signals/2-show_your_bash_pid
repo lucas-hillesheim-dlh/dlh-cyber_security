@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Run the ps command showing all processes in a hierarchy format and then filtering the lines with bash
+# shellcheck disable=SC2009
+ps auf | grep bash
