@@ -1,2 +1,2 @@
 #!/bin/bash
-sudo ss -pant
+sudo ss -antp
