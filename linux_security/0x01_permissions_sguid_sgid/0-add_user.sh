@@ -1,2 +1,3 @@
 #!/bin/bash
-sudo useradd $1 && echo -e "$2\n$2" | sudo passwd $1
+sudo useradd $1
+echo -e "$2\n$2" | sudo passwd $1
