@@ -1,2 +1,2 @@
 #!/bin/bash
-find / -xdev -type d -perm -0002 -exec ls -d {} + -exec chmod o-w {} \; 2> /dev/null
+find / -xdev -type d -perm -0002 -exec ls -d {} + -exec chmod o-w {} + 2> /dev/null
