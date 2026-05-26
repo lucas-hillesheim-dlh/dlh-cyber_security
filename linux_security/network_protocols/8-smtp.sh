@@ -1,2 +1,2 @@
 #!/bin/bash
-grep -E '^[^#]*security' /etc/postfix/main.cf || echo "STARTTLS not configured"
+grep -E '^smtpd_tls_security_level' /etc/postfix/main.cf || echo "STARTTLS not configured"
