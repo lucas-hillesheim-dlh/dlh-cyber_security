@@ -1,2 +1,2 @@
 #!/bin/bash
-find /etc/snmp/ -name "snmpd.conf" -exec grep -E "^[^#]*public" {} +
+find /etc/snmp/snmpd.conf -name "snmpd.conf" -exec grep -E "^[^#]*public" {} +
