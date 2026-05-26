@@ -2,6 +2,6 @@ Protocol 2
 PermitRootLogin no
 PasswordAuthentication no
 PermitEmptyPasswords no
-PubkeyAuthentication no
+PubkeyAuthentication yes
 X11Forwarding no
 Port 2222
