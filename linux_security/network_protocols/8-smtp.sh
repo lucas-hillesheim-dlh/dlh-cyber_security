@@ -1,2 +1,2 @@
 #!/bin/bash
-postconf -n smtpd_tls_security_level || echo "STARTTLS not configured"
+grep -E '^[^#]*security' /etc/postfix/main.cf || echo "STARTTLS not configured"
