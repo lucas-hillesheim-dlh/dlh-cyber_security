@@ -3,10 +3,12 @@ import requests
 from bs4 import BeautifulSoup
 
 def download_page(url):
-    response = requests.get(url)
-    soup = BeautifulSoup(response.text, 'html.parser')
-
-    return soup.prettify()
+    try:
+        response = requests.get(url)
+        soup = BeautifulSoup(response.text, 'html.parser')
+        return soup.prettify()
+    except requests.exceptions.RequestException:
+        return f"Download failed for {url}"
 
 if __name__ == "__main__":
     import sys
