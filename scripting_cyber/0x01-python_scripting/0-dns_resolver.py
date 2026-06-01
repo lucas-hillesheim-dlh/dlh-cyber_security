@@ -6,7 +6,7 @@ def resolve_domain_to_ipv4(domain):
     try:
         result = socket.gethostbyname(domain)
     except socket.gaierror as e:
-        result = ""
+        result = None
     return result
 
 if __name__ == "__main__":
