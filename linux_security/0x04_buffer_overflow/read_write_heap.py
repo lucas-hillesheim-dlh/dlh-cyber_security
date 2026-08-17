@@ -81,7 +81,7 @@ def replace_in_heap(pid, target_str, replacement_str):
             mem_file.seek(target_addr)
             mem_file.write(padded_replacement)
         
-        print("COMPLETE!")
+        # print("COMPLETE!")
         # print("[+] Replacement complete.")
 
 if __name__ == "__main__":
