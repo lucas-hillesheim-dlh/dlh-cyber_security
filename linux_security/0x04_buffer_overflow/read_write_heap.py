@@ -44,7 +44,7 @@ def replace_in_heap(pid, target_str, replacement_str):
     # Locate heap addresses
     start_addr, end_addr, perms = get_heap_region(pid)
     heap_size = end_addr - start_addr
-    print(f"[*] Found heap at 0x{start_addr:x} - 0x{end_addr:x} (Size: {heap_size} bytes)")
+    # print(f"[*] Found heap at 0x{start_addr:x} - 0x{end_addr:x} (Size: {heap_size} bytes)")
 
     if "w" not in perms:
         raise PermissionError("Heap region is not marked as writable.")
@@ -71,17 +71,18 @@ def replace_in_heap(pid, target_str, replacement_str):
             print(f"[-] String '{target_str}' not found in heap.")
             return
 
-        print(f"[+] Found {len(matches)} occurrence(s) in heap.")
+        # print(f"[+] Found {len(matches)} occurrence(s) in heap.")
 
         # Replace each occurrence
         for match_offset in matches:
             target_addr = start_addr + match_offset
-            print(f"[*] Overwriting at address: 0x{target_addr:x}")
+            # print(f"[*] Overwriting at address: 0x{target_addr:x}")
             
             mem_file.seek(target_addr)
             mem_file.write(padded_replacement)
-
-        print("[+] Replacement complete.")
+        
+        print("COMPLETE!")
+        # print("[+] Replacement complete.")
 
 if __name__ == "__main__":
     if len(sys.argv) != 4:
