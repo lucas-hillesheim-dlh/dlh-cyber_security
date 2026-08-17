@@ -1,27 +1,36 @@
 #!/usr/bin/python3
 """
-## This module finds a string in the heap of a running process, and replaces it.
+## This module finds a string in the heap of a running process,
+and replaces it.
 
 Keyword arguments:
-pid -- The PID of the target running process 
-search_string -- The string in the running process that will be replaced
-replace_string -- The string that will replace the search_string in the running process
+pid -- The PID of the target running process
+search_string -- The string in the running process that will be
+replace
+replace_string -- The string that will replace the search_string
+in the running process
 """
 import os
 import re
 import sys
 
+
 def get_heap_region(pid):
-    """Parses /proc/[pid]/maps to locate the start and end address of the heap."""
+    """
+    Parses /proc/[pid]/maps to locate the start and end
+    address of the heap.
+    """
     maps_path = f"/proc/{pid}/maps"
     if not os.path.exists(maps_path):
-        raise FileNotFoundError(f"Process {pid} does not exist or maps file unavailable.")
+        raise FileNotFoundError(f"""Process {pid} does not exist or
+                                maps file unavailable.""")
 
     with open(maps_path, "r") as f:
+        regex = r"^([0-9a-fA-F]+)-([0-9a-fA-F]+)\s+([rwxp-]{4})"
         for line in f:
             # Example line: 021f1000-02212000 rw-p 00000000 00:00 0 [heap]
             if "[heap]" in line:
-                match = re.match(r"^([0-9a-fA-F]+)-([0-9a-fA-F]+)\s+([rwxp-]{4})", line)
+                match = re.match(regex, line)
                 if match:
                     start_addr = int(match.group(1), 16)
                     end_addr = int(match.group(2), 16)
@@ -30,13 +39,15 @@ def get_heap_region(pid):
 
     raise RuntimeError(f"Could not find '[heap]' region for PID {pid}.")
 
+
 def replace_in_heap(pid, target_str, replacement_str):
     """Replaces the string in the heap memory process """
     target_bytes = target_str.encode("utf-8")
     replacement_bytes = replacement_str.encode("utf-8")
 
     if len(replacement_bytes) > len(target_bytes):
-        raise ValueError("Replacement string cannot be longer than target string!")
+        raise ValueError("""Replacement string cannot be longer than target
+                          string!""")
 
     # Pad replacement with null bytes if it's shorter than the target
     padded_replacement = replacement_bytes.ljust(len(target_bytes), b'\x00')
@@ -44,13 +55,14 @@ def replace_in_heap(pid, target_str, replacement_str):
     # Locate heap addresses
     start_addr, end_addr, perms = get_heap_region(pid)
     heap_size = end_addr - start_addr
-    # print(f"[*] Found heap at 0x{start_addr:x} - 0x{end_addr:x} (Size: {heap_size} bytes)")
+    # print(f"[*] Found heap at 0x{start_addr:x} - 0x{end_addr:x}
+    # (Size: {heap_size} bytes)")
 
     if "w" not in perms:
         raise PermissionError("Heap region is not marked as writable.")
 
     mem_path = f"/proc/{pid}/mem"
-    
+
     # Open /proc/[pid]/mem in read/write binary mode
     with open(mem_path, "rb+") as mem_file:
         # Seek to the start of the heap region
@@ -77,16 +89,18 @@ def replace_in_heap(pid, target_str, replacement_str):
         for match_offset in matches:
             target_addr = start_addr + match_offset
             # print(f"[*] Overwriting at address: 0x{target_addr:x}")
-            
+
             mem_file.seek(target_addr)
             mem_file.write(padded_replacement)
-        
+
         # print("COMPLETE!")
         # print("[+] Replacement complete.")
 
+
 if __name__ == "__main__":
     if len(sys.argv) != 4:
-        print(f"Usage: sudo python3 {sys.argv[0]} <PID> <target_string> <replacement_string>")
+        print(f"""Usage: sudo python3 {sys.argv[0]} <PID> <target_string>
+              <replacement_string>""")
         sys.exit(1)
 
     target_pid = int(sys.argv[1])
@@ -97,6 +111,3 @@ if __name__ == "__main__":
         replace_in_heap(target_pid, search_str, replace_str)
     except Exception as e:
         print(f"[!] Error: {e}")
-
-
-
