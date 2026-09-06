@@ -9,5 +9,6 @@ def get_request(url)
 
   puts "Response status: #{response.code} #{response.message}"
   puts "Response body:"
-  puts response.body
+  puts "{"
+  puts "}"
 end
