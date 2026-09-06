@@ -14,7 +14,7 @@ def merge_json_files(file1_path, file2_path)
   data1 = JSON.parse(read_file(file1_path))
   data2 = JSON.parse(read_file(file2_path))
   
-  data_merged = data1 + data2
+  data_merged = data2 + data1
 
   json_merged = JSON.generate(data_merged)
   write_file(file2_path, json_merged)
