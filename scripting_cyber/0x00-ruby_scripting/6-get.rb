@@ -2,6 +2,7 @@
 
 require 'net/http'
 require 'uri'
+require 'json'
 
 def get_request(url)
   uri = URI.parse(url)
@@ -9,5 +10,16 @@ def get_request(url)
 
   puts "Response status: #{response.code} #{response.message}"
   puts "Response body:"
-  puts response.body
+  
+  begin
+    if response.body == "{}"
+      puts "{"
+      puts "}"
+    else
+      parsed_body = JSON.parse(response.body)
+      puts JSON.pretty_generate(parsed_body)
+    end
+  rescue JSON::ParserError
+    puts response.body
+  end
 end
