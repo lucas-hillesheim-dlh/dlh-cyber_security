@@ -16,7 +16,6 @@ def count_user_ids(path)
       user_ids[userId] += 1
     end
   end
-  user_ids = user_ids.sort_by { |key| key }.to_h
   user_ids.each do |key, value|
     puts "#{key}: #{value}"
   end
