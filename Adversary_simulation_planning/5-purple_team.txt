@@ -1,0 +1,90 @@
+1. Detection Rate:
+
+Techniques Tested:   5
+Techniques Detected: 3
+
+Detection Rate = 3 / 5 = 60%
+
+A 60% detection rate means the Blue Team correctly identified 3 out of 5
+simulated adversary techniques. This indicates partial but incomplete
+visibility across the attack chain: the techniques that were caught show
+working detection logic exists, but the two misses represent concrete
+blind spots an adversary like FIN7 could exploit to progress further
+before being noticed.
+
+2. MTTD Assessment:
+
+Average MTTD: 32 minutes
+
+Assessment: NOT ACCEPTABLE
+
+For a financial institution, 32 minutes is too slow against the project's
+success target. Purple team and SOC maturity programs generally set a
+target of single-digit-to-low-double-digit minutes for detecting a known,
+signature-able technique once it executes in an actively monitored
+environment; 32 minutes exceeds that target by a wide margin and gives an
+adversary meaningful time to pivot, establish persistence, or begin
+exfiltration before an analyst is alerted.
+
+The threat context makes this gap more serious, not less. Financial
+services is one of the most heavily targeted sectors for data
+compromises, and once a breach does occur, real-world detection and
+containment times are dramatically worse than this exercise's 32-minute
+figure: the IBM 2025 Cost of a Data Breach Report found that financial-
+sector breaches take an average of 241 days to identify and contain, and
+that system intrusion (multi-stage attacks consistent with FIN7's
+tradecraft) now accounts for 53% of financial sector breaches. A
+32-minute MTTD in a controlled, known-scope exercise is effectively a
+best-case number; if the Blue Team cannot consistently beat a
+low-double-digit-minute target under test conditions, there is no basis
+for confidence that it can detect a live, obfuscated FIN7-style intrusion
+before meaningful damage occurs.
+
+External reference: IBM, "Cost of a Data Breach Report 2025" (financial
+services sector breach identification and containment statistics).
+
+3. ATT&CK Coverage Table:
+
+| ATT&CK ID  | Technique Name                          | Tested | Detected | MTTD    |
+|------------|------------------------------------------|--------|----------|---------|
+| T1566.001  | Spearphishing Attachment                 | Yes    | Yes      | 18 min  |
+| T1059.001  | PowerShell                                | Yes    | Yes      | 22 min  |
+| T1547.001  | Registry Run Keys / Startup Folder        | Yes    | Yes      | 56 min  |
+| T1087.001  | Local Account Discovery                   | Yes    | No       | -       |
+| T1021.001  | Remote Desktop Protocol (Lateral Movement)| Yes    | No       | -       |
+
+(Average MTTD of 32 minutes reflects the mean across the three detected
+techniques: (18 + 22 + 56) / 3 = 32 minutes.)
+
+4. Recommendations Per Undetected Technique:
+
+T1087.001 - Local Account Discovery:
+Implement command-line and process-creation logging (e.g. Sysmon Event ID
+1, Windows Event ID 4688) with detection rules that flag enumeration
+commands such as `net user`, `net localgroup`, or Get-LocalUser against
+sensitive hosts, especially when run shortly after an initial-access
+event. Correlate this with the originating process so discovery activity
+following a phishing or execution step is prioritized rather than treated
+as a standalone low-priority event.
+
+T1021.001 - Remote Desktop Protocol (Lateral Movement):
+Enable and monitor RDP-specific logging (Windows Event ID 4624 Logon Type
+10, 4648 explicit credential use) and deploy detections for anomalous RDP
+sessions, such as logins from unusual source hosts, off-hours access, or
+a single account authenticating to multiple hosts in a short window.
+Pair this with network segmentation and RDP restriction policies (jump
+hosts, MFA) so a lateral movement attempt generates both a network
+control failure and a log-based alert.
+
+5. Executive Summary:
+
+During this exercise, our team simulated five real-world attack techniques
+associated with the financial-sector threat actor FIN7 to test how
+effectively our security team can detect an active intrusion. The security
+team successfully caught three of the five techniques, for a 60%
+detection rate, but took an average of 32 minutes to do so, which is
+slower than our target and a meaningful gap given how quickly real
+attackers can escalate access once inside. We recommend investing in the
+two specific detection gaps identified (account discovery and lateral
+movement visibility) and re-testing within the next quarter to confirm
+improvement before the next exercise.
