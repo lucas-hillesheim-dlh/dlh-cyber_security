@@ -1,0 +1,72 @@
+Rules of Engagement Addendum & De-confliction Protocol
+Exercise: FIN7 Threat Emulation
+
+Part A - Safe Simulation Table:
+
+| Behavior                   | Risk Level | What Is Allowed                                                                                      | What Is Prohibited                                                                                      | Cleanup Steps                                                                                          |
+|-----------------------------|------------|-------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------|
+| C2 Beacon                   | Medium     | Simulated outbound beacon traffic to a pre-approved, operator-controlled test listener on an isolated lab network, at a fixed low interval. | Beaconing to any live/public internet infrastructure, real malware C2 frameworks pointed at production assets, or traffic that leaves the lab network segment. | Terminate the beacon process; remove any scheduled task or script used to start it; confirm no outbound connections remain via netstat/ss; clear related temp files. |
+| Persistence (Registry Run Key) | Low        | Adding a single benign test entry (pointing to a harmless, non-executing or clearly labeled test binary) to a Run key on an isolated lab VM. | Modifying production host registries, adding entries that execute real payloads, or persisting across a VM snapshot revert. | Delete the specific Run key value immediately after the test step; verify removal with a registry query; revert VM to clean snapshot if available. |
+| Data Exfiltration           | High       | Simulated transfer of clearly labeled, synthetic dummy data (no real PII/PCI/financial records) to a lab-internal destination over an approved protocol. | Exfiltrating any real client data, real credentials, or any data leaving the authorized lab network boundary; use of real cloud storage or external drop sites. | Delete the dummy dataset and any staged copies from source and destination; verify no residual files in temp/staging directories; confirm transfer logs are retained for the report, not the data itself. |
+| Lateral Movement            | High       | Simulated authentication/movement between pre-designated lab hosts using test or disposable credentials created solely for the exercise. | Using real employee or service-account credentials, moving to any host outside the agreed lab scope, or movement into production segments. | Remove any test credentials, scheduled tasks, or remote sessions created; reset lab host states to baseline; confirm no new accounts or sessions persist. |
+| Credential Access            | Medium     | Simulated credential-dumping technique run against a lab VM seeded only with dummy/throwaway credentials. | Dumping or capturing real user, admin, or service-account credentials on any system, in-lab or otherwise. | Securely delete any dumped credential artifacts and output files; rotate/delete the dummy accounts used; confirm no credential material is left in memory dumps, logs, or temp storage. |
+
+Part B - De-confliction Protocol:
+
+1. Point of Contact:
+   If the Blue Team detects suspicious activity, they contact the designated
+   Exercise Lead (Red Team Lead) directly via the pre-agreed out-of-band
+   channel (dedicated Slack/Teams de-confliction channel or phone bridge
+   established before the exercise begins). The Exercise Lead is reachable
+   for the full duration of the test window.
+
+2. Validation Process:
+   The Exercise Lead cross-checks the reported activity (timestamp, source
+   host/IP, behavior) against the signed-off Emulation Plan and live
+   operator log. Validation is targeted to complete within 15 minutes of
+   the Blue Team's report. If the Exercise Lead cannot reach the operator
+   or confirm the activity within that window, it is treated as unvalidated
+   and escalated per Section 4.
+
+3. Test Continuation:
+   The specific test step under question is paused the moment the Blue
+   Team reports it, while the rest of the exercise may continue only if
+   the paused step is isolated and does not affect other in-progress
+   steps. Once the Exercise Lead confirms the activity is part of the
+   authorized simulation, the paused step resumes. If it cannot be
+   confirmed within the validation window, the entire exercise pauses.
+
+4. Real Incident Discovery:
+   If the activity is confirmed NOT to be part of the simulation, the
+   exercise is immediately and fully paused. The Exercise Lead notifies
+   the client's Incident Response lead and CISO (or designated security
+   point of contact) without delay, hands off all relevant timing and
+   scope details to the client's incident response process, and the
+   simulation does not resume until the client confirms the real incident
+   has been triaged and gives explicit authorization to continue.
+
+Part C - Emergency Stop Criteria:
+
+1. Unintended Scope Breach: Any simulated activity (beaconing, lateral
+   movement, credential access, etc.) is detected on a system, network
+   segment, or account outside the explicitly agreed lab/test boundary.
+
+2. Real Alert Triggered in a Production System: A genuine security alert,
+   SIEM correlation, or incident ticket is generated against production
+   infrastructure that is not accounted for by the signed-off Emulation
+   Plan.
+
+3. System Instability or Service Disruption: Any simulation step causes a
+   crash, performance degradation, service outage, or otherwise impacts
+   the availability of a lab or production system beyond what was
+   explicitly planned and approved.
+
+4. Loss of Communication with the Exercise Lead or Operator: The
+   de-confliction point of contact becomes unreachable during an active
+   test step, removing the ability to validate or control the simulation
+   in real time.
+
+5. Client-Issued Stop Order: The client, at any time and for any reason,
+   invokes the agreed stop-word or formally requests the exercise be
+   halted; this is honored immediately and without requiring
+   justification.
