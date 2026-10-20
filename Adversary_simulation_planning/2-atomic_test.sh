@@ -45,7 +45,7 @@ echo "Running simulation..."
     echo "Generated: ${start_time}"
     echo "---"
     echo "## Local user accounts (/etc/passwd)"
-    cut -d: -f1,3,4,6,7 /etc/passwd
+    cat /etc/passwd
     echo "---"
     echo "## Currently logged-in users"
     who 2>/dev/null || echo "who: no users currently logged in or command unavailable"
