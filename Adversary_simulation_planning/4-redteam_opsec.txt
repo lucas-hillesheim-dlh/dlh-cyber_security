@@ -1,0 +1,42 @@
+Red Team OpSec Assessment
+
+Part A - OpSec Risk Table:
+
+| Risk                                 | Likelihood | Impact | Mitigation                                                                                                   |
+|---------------------------------------|------------|--------|----------------------------------------------------------------------------------------------------------------|
+| C2 infrastructure exposure            | Medium     | High   | Register and host all C2 infrastructure under dedicated operational accounts/business identities, never personal or corporate-identifiable ones; use domain fronting or redirectors, categorize domains ahead of time, and keep WHOIS/registration data privacy-protected and unlinked to any operator. |
+| Operator identity leakage             | Medium     | High   | Use operator-specific pseudonymous accounts and burner credentials for all infrastructure registration, payment, and tooling; never reuse personal email, phone numbers, payment methods, or social accounts for engagement work; enforce this via a pre-engagement checklist sign-off. |
+| Tool signature detection              | High       | Medium | Custom-compile and obfuscate payloads per engagement rather than reusing public/default builds; test tooling against representative AV/EDR in a lab before deployment; avoid default C2 framework profiles and indicators (ports, URIs, user-agents, certificates). |
+| Log artifacts left on target systems  | High       | Medium | Track every action taken on target systems in a live operator log; execute only the minimum steps needed to prove the technique; clean up created files, registry keys, scheduled tasks, and accounts immediately after each step; verify cleanup before closing out the engagement. |
+
+Part B - Pre-Engagement OpSec Checklist:
+
+Communication Security
+[ ] All team coordination (planning, live status updates, findings) happens over an encrypted, access-controlled channel (e.g. Signal, encrypted team chat) — never unencrypted email or personal messaging apps.
+[ ] Access to the coordination channel and any shared operational documents is restricted to engagement team members only, with access revoked at engagement close.
+
+Infrastructure Setup
+[ ] C2 servers, redirectors, and domains are provisioned fresh for the engagement under operational (non-personal) identities and payment methods, never reused from prior engagements or personal infrastructure.
+[ ] Redirectors sit between target-facing traffic and the actual C2 server, with logging/alerting configured so the team is notified of unexpected inbound connections.
+
+Tool Preparation
+[ ] Payloads and implants are custom-compiled per engagement with unique indicators (hashes, strings, network signatures) rather than reused from previous ops or taken directly from public repositories.
+[ ] Tooling is validated against a representative AV/EDR baseline in a lab prior to use, to confirm expected detection/evasion behavior and avoid surprises mid-engagement.
+
+Documentation Hygiene
+[ ] No client data, credentials, screenshots, or engagement notes are stored on personal devices or personal cloud accounts; all artifacts stay on company-managed, encrypted systems.
+[ ] All engagement documentation (scope, RoE, logs, findings) is stored in an access-controlled repository and permanently deleted or archived per the client's data-retention agreement at engagement close.
+
+Part C - Why Red Team OpSec Protects the Client:
+
+Red team OpSec is not just about keeping the operators safe or hidden, it is
+what makes the exercise's results trustworthy in the first place. If the
+operation is exposed early through sloppy OpSec, the Blue Team stops
+reacting to a realistic adversary and starts reacting to a known test,
+which invalidates the exercise's ability to measure real detection and
+response capability. A poorly secured operation can also leak the client's
+own sensitive data, infrastructure details, or the red team's methodology
+to unintended parties, creating real exposure the client never agreed to
+accept. Ultimately, the client is paying for an honest, controlled
+simulation of risk, and maintaining strong OpSec is how the red team
+honors that trust and keeps the engagement safe, legal, and valid.
