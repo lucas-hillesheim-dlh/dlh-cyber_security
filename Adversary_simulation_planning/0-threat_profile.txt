@@ -1,0 +1,23 @@
+Threat Actor Profile: FIN7 (aliases: Carbon Spider, Carbanak Group, Navigator Group, ELBRUS)
+
+Target Sectors:
+- Financial Services (banks, payment processors, insurance)
+- Hospitality and Restaurants (point-of-sale environments)
+- Retail
+
+Motivation:
+FIN7 is a financially motivated cybercrime group whose primary objective is monetary gain, historically through theft of payment card data and unauthorized access to financial systems, and more recently through ransomware and data-extortion operations.
+
+Key Techniques:
+1. T1566.001: Phishing: Spearphishing Attachment (Initial Access)
+2. T1204.002: User Execution: Malicious File (Execution)
+3. T1059.001: Command and Scripting Interpreter: PowerShell (Execution)
+
+Associated Tools:
+- Carbanak (backdoor)
+- Griffon (JavaScript backdoor)
+- Pillowmint (POS memory-scraping malware)
+- Cobalt Strike (post-exploitation framework)
+
+Known Campaign:
+Payment Card Theft Campaign (2015-2018, indicted August 2018): FIN7 sent phishing emails with malicious attachments to restaurant, hospitality and retail staff, then deployed malware on point-of-sale systems. According to the U.S. Department of Justice, the group compromised over 6,500 POS terminals at more than 3,600 business locations in 47 U.S. states and stole data from over 15 million payment cards, operating under the front company "Combi Security."
