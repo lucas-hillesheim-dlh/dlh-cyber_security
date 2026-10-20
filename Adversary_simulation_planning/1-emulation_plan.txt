@@ -1,0 +1,49 @@
+Emulation Plan: FIN7
+
+Step 1: Initial Access
+- Tactic: Initial Access
+- Technique: T1566.001 — Phishing: Spearphishing Attachment
+- Procedure: In an isolated lab environment, send a simulated email to a
+  test mailbox containing a benign, non-malicious Office document (no
+  macros that execute harmful code — a signed, sandboxed test payload
+  such as the Atomic Red Team T1566.001 test or a calc.exe launcher used
+  purely to validate detection). The test mailbox and recipient endpoint
+  exist only within the isolated range; no production systems or real
+  users are involved.
+- Expected Blue Team Visibility: Email gateway/attachment-sandbox alerts
+  on the inbound message, mail logs showing delivery to the test
+  mailbox, EDR telemetry on the endpoint showing the document being
+  opened, and any macro/script execution attempt flagged by
+  application-control or antivirus logging.
+
+Step 2: Execution
+- Tactic: Execution
+- Technique: T1059.001 — Command and Scripting Interpreter: PowerShell
+- Procedure: From the lab endpoint used in Step 1, simulate the
+  follow-on behavior by running a benign PowerShell command (e.g. an
+  Atomic Red Team T1059.001 test that writes a harmless file or queries
+  system information) to emulate FIN7's use of PowerShell-based loaders
+  for staging and downloading second-stage tools. No network callbacks
+  to real infrastructure are made; any "download" step points to a
+  lab-internal test server.
+- Expected Blue Team Visibility: PowerShell ScriptBlock/Module logging
+  (Event ID 4104), EDR process-creation telemetry showing
+  powershell.exe spawned from the Office application (parent-child
+  process anomaly), and any command-line logging or AMSI alerts
+  triggered by the script content.
+
+Step 3: Persistence
+- Tactic: Persistence
+- Technique: T1547.001 — Boot or Logon Autostart Execution: Registry
+  Run Keys / Startup Folder
+- Procedure: On the same isolated lab endpoint, simulate establishing
+  persistence by adding a benign test entry to a Run key (e.g. an
+  Atomic Red Team T1547.001 test that points to a harmless executable
+  or script) to emulate how FIN7 maintains access to compromised hosts
+  between reboots. The entry is removed immediately after the test and
+  never touches a production asset.
+- Expected Blue Team Visibility: Windows Registry-modification
+  telemetry (Sysmon Event ID 13) showing a new Run key value, EDR
+  alerts for autostart-location changes, and correlation with the
+  process that created the entry (tying it back to the Step 2
+  PowerShell activity) for a full attack-chain view in the SIEM.
