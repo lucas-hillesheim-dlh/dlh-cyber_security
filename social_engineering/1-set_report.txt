@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding='UTF-8'?>
 <harvester>
    URL=http://demo.testfire.net/login.jsp
-   <url> 
-      <param>uid=admin_test</param>
+   <url>      <param>uid=admin_test</param>
       <param>passw=Password1!</param>
       <param>btnSubmit=Login</param>
    </url>
