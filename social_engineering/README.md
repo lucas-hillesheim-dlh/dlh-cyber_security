@@ -47,14 +47,10 @@ At the end of this project, you are expected to be able to [explain to anyone](h
     - Password: 1122
 
 ###### Here's how to installSET on Kali Linux:
-    `
     sudo apt-get update
     sudo apt install set -y
-    `
 
 ###### Then launch:
-    `
     sudo setoolkit
-    `
 
 **NB**: `The tools used in this lab are powerful weapons in a pentester's arsenal. They must only be used in authorized testing environments. We learn to exploit the human layer not to cause harm, but to secure the 'weakest link' in cybersecurity.`
