@@ -1,2 +1,2 @@
 #!/bin/bash
-grep "new user" audit.log | cut -d '=' -f2 | cut -d ',' -f1 | sort | tr \\n ,
+grep -oE "new user: name=[^,]+" audit.log | sed 's/.*name=//' | LC_ALL=C sort | paste -sd,
